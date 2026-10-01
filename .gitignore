@@ -5,4 +5,5 @@ models/
 workspace/*
 !workspace/.gitkeep
 benchmarks/*.jsonl
+benchmarks/*.log
 llama.cpp/
