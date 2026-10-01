@@ -30,17 +30,13 @@ Open a terminal on the Pi and run:
 
 ```bash
 cd ~/tiny-agents
-./llama.cpp/build/bin/llama-cli \
-  --model models/Qwen_Qwen3.5-2B-Q4_K_M.gguf \
-  --ctx-size 4096 \
-  --threads 4 \
-  --jinja \
-  --conversation
+./llama.cpp/build/bin/llama-cli --model models/Qwen_Qwen3.5-2B-Q4_K_M.gguf --ctx-size 4096 --threads 4 --jinja
 ```
 
-Wait for the model to load, type a message, and press Enter. `llama-cli` shows
-timing information after each response. Press Ctrl+C to interrupt generation or
-leave the program.
+The model's built-in chat template automatically enables conversation mode in
+this `llama.cpp` build. Wait for the model to load, type a message, and press
+Enter. `llama-cli` shows timing information after each response. Press Ctrl+C
+to interrupt generation or leave the program.
 
 Example prompts:
 
