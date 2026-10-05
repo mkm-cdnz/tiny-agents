@@ -11,7 +11,7 @@ sed "s/^User=.*/User=$run_user/" hermes-pi-display.service > /etc/systemd/system
 install -m 0755 launch-kiosk.sh /opt/hermes-pi-alerts/launch-kiosk.sh
 if [ ! -f /etc/hermes-pi-alerts.env ]; then
   token=$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')
-  printf 'HERMES_PI_TOKEN=%s\nHERMES_PI_DISPLAY_COMMAND=\n' "$token" > /etc/hermes-pi-alerts.env
+  printf 'HERMES_PI_TOKEN=%s\nHERMES_PI_DISPLAY_COMMAND=\nHERMES_PI_TV_CONTROL=off\n' "$token" > /etc/hermes-pi-alerts.env
   chmod 0600 /etc/hermes-pi-alerts.env
 fi
 systemctl daemon-reload
