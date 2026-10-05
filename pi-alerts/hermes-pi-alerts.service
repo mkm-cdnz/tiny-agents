@@ -1,0 +1,19 @@
+[Unit]
+Description=Hermes Pi alert receiver
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/opt/hermes-pi-alerts
+EnvironmentFile=/etc/hermes-pi-alerts.env
+ExecStart=/usr/bin/python3 /opt/hermes-pi-alerts/receiver.py --host 0.0.0.0 --port 8787 --db /var/lib/hermes-pi-alerts/alerts.db
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
