@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-import html, json, os, sqlite3, urllib.parse
+import html, json, os, sqlite3, urllib.parse, time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 DB=os.environ.get('HERMES_PI_ALERT_DB','/var/lib/hermes-pi-alerts/alerts.db')
 def current():
     try:
-        db=sqlite3.connect(DB); row=db.execute("SELECT payload FROM alerts WHERE status='queued' ORDER BY created_at LIMIT 1").fetchone(); db.close()
-        return json.loads(row[0]) if row else None
+        db=sqlite3.connect(DB); row=db.execute("SELECT payload,created_at FROM alerts WHERE status='queued' ORDER BY created_at DESC LIMIT 1").fetchone(); db.close()
+        if not row: return None
+        p=json.loads(row[0]); ttl=int(p.get('display_seconds',30));
+        return p if time.time()-row[1] <= ttl else None
     except Exception: return None
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
