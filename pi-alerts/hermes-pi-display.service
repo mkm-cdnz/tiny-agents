@@ -1,0 +1,14 @@
+[Unit]
+Description=Hermes Pi local alert display server
+After=hermes-pi-alerts.service
+
+[Service]
+Type=simple
+User=matt
+Environment=HERMES_PI_ALERT_DB=/var/lib/hermes-pi-alerts/alerts.db
+ExecStart=/usr/bin/python3 /opt/hermes-pi-alerts/display_server.py
+Restart=on-failure
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
