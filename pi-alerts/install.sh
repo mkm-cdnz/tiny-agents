@@ -3,6 +3,7 @@ set -eu
 run_user="${SUDO_USER:-$(id -un)}"
 case "$run_user" in (*[!a-zA-Z0-9_.-]*|'') echo "invalid service user" >&2; exit 1;; esac
 install -d -m 0755 /opt/hermes-pi-alerts /var/lib/hermes-pi-alerts
+chown -R "$run_user":"$run_user" /opt/hermes-pi-alerts /var/lib/hermes-pi-alerts
 install -m 0755 receiver.py /opt/hermes-pi-alerts/receiver.py
 sed "s/^User=.*/User=$run_user/" hermes-pi-alerts.service > /etc/systemd/system/hermes-pi-alerts.service
 if [ ! -f /etc/hermes-pi-alerts.env ]; then
