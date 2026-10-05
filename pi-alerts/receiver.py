@@ -28,6 +28,11 @@ def validate(p):
         if not isinstance(p.get(key), str) or not p[key].strip(): raise ValueError(f"missing {key}")
     if len(p["id"]) > 160 or len(p["title"]) > 240 or len(p["body"]) > 20000: raise ValueError("field too large")
     if p.get("priority", "normal") not in {"low", "normal", "high", "critical"}: raise ValueError("invalid priority")
+    blocks=p.get('content', [])
+    if not isinstance(blocks, list) or len(blocks)>8: raise ValueError('content must contain at most 8 blocks')
+    for b in blocks:
+        if not isinstance(b, dict) or b.get('type') not in {'text','image','youtube','map','qr'}: raise ValueError('invalid content block')
+        if len(str(b.get('value',''))) > 4000: raise ValueError('content block too large')
     return p
 
 class App:
