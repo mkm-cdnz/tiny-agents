@@ -10,7 +10,7 @@ def current():
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         p=current(); title=html.escape(p.get('title','')) if p else 'Hermes Pi Display'; body=html.escape(p.get('body','')) if p else 'Waiting for alerts.'
-        data=f'''<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{{margin:0;background:#101820;color:#fff;font-family:sans-serif}}main{{padding:6vw}}h1{{font-size:7vw;margin:0 0 3vw}}p{{font-size:4vw;white-space:pre-wrap}}</style><main><h1>{title}</h1><p>{body}</p></main>'''.encode()
+        data=f'''<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{{margin:0;background:#101820;color:#fff;font-family:sans-serif}}main{{padding:6vw}}h1{{font-size:7vw;margin:0 0 3vw}}p{{font-size:4vw;white-space:pre-wrap}}</style><main><h1>{title}</h1><p>{body}</p></main><script>setTimeout(()=>location.reload(),2000)</script>'''.encode()
         self.send_response(200); self.send_header('Content-Type','text/html'); self.send_header('Content-Length',str(len(data))); self.end_headers(); self.wfile.write(data)
     def log_message(self,*a): pass
 ThreadingHTTPServer(('127.0.0.1',8788),Handler).serve_forever()
