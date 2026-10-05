@@ -5,12 +5,15 @@ case "$run_user" in (*[!a-zA-Z0-9_.-]*|'') echo "invalid service user" >&2; exit
 install -d -m 0755 /opt/hermes-pi-alerts /var/lib/hermes-pi-alerts
 chown -R "$run_user":"$run_user" /opt/hermes-pi-alerts /var/lib/hermes-pi-alerts
 install -m 0755 receiver.py /opt/hermes-pi-alerts/receiver.py
+install -m 0755 display_server.py /opt/hermes-pi-alerts/display_server.py
 sed "s/^User=.*/User=$run_user/" hermes-pi-alerts.service > /etc/systemd/system/hermes-pi-alerts.service
+sed "s/^User=.*/User=$run_user/" hermes-pi-display.service > /etc/systemd/system/hermes-pi-display.service
+install -m 0755 launch-kiosk.sh /opt/hermes-pi-alerts/launch-kiosk.sh
 if [ ! -f /etc/hermes-pi-alerts.env ]; then
   token=$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')
   printf 'HERMES_PI_TOKEN=%s\nHERMES_PI_DISPLAY_COMMAND=\n' "$token" > /etc/hermes-pi-alerts.env
   chmod 0600 /etc/hermes-pi-alerts.env
 fi
 systemctl daemon-reload
-systemctl enable --now hermes-pi-alerts.service
+systemctl enable --now hermes-pi-alerts.service hermes-pi-display.service
 systemctl --no-pager --full status hermes-pi-alerts.service
