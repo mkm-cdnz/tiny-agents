@@ -9,6 +9,19 @@ SCHEMA = """CREATE TABLE IF NOT EXISTS alerts (
 
 def now(): return time.time()
 
+def tv_power():
+    if os.environ.get('HERMES_PI_TV_CONTROL') != 'on': return 'unknown'
+    try:
+        out=subprocess.run("printf 'pow 0\\n' | cec-client -s -d 1 /dev/cec1",shell=True,capture_output=True,text=True,timeout=4).stdout.lower()
+        return 'on' if 'power status: on' in out else ('off' if 'power status: standby' in out else 'unknown')
+    except (OSError, subprocess.TimeoutExpired): return 'unknown'
+
+def maybe_wake_tv(payload):
+    if payload.get('tv_policy') != 'wake_if_off' or os.environ.get('HERMES_PI_TV_CONTROL') != 'on': return
+    if tv_power() == 'off':
+        try: subprocess.run("printf 'on 0\\n' | cec-client -s -d 1 /dev/cec1",shell=True,timeout=4,check=False)
+        except (OSError, subprocess.TimeoutExpired): pass
+
 def validate(p):
     if not isinstance(p, dict): raise ValueError("payload must be an object")
     for key in ("id", "title", "body"):
