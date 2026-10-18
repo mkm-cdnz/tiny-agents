@@ -1,0 +1,8 @@
+# Private runtime material: never version captures, prompts or answers.
+data/
+__pycache__/
+*.py[cod]
+.env
+*.sqlite*
+*.db*
+*.log
