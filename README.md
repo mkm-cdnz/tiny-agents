@@ -6,6 +6,15 @@ The first target is a 4 GB Raspberry Pi 5 running `llama.cpp` as an
 OpenAI-compatible server. The agent itself uses only Python's standard library
 so that most of the Pi's memory remains available for inference.
 
+## Agent Eyes: mobile-to-local vision proof of concept
+
+[Agent Eyes](agent-eyes/README.md) adds a separate, standard-library photo +
+prompt → local Ollama → saved text → phone demo over private Tailscale access.
+It is a working experimental baseline, not an autonomous agent or a Meshdoor
+integration. Start with its [next-agent handoff](agent-eyes/HANDOFF.md) and
+[testing notes](agent-eyes/TESTING.md); further changes should follow real
+phone-testing feedback. Captures and private deployment details are not in Git.
+
 ## Run the model as a normal chatbot
 
 This is the best place to start. It runs the downloaded Qwen3.5-2B model as-is,
